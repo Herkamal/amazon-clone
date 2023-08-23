@@ -1,8 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { MenuIcon, SearchIcon, ShoppingCartIcon } from '@heroicons/react/outline';
-
-import { signIn, signOut, useSession } from "next-auth/client";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 
 function Header() {

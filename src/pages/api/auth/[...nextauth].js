@@ -1,13 +1,15 @@
-import NextAuth from "next-auth";
-import Providers from "next-auth/providers"; 
+import NextAuth from "next-auth"
+import SessionProvider from "next-auth/react"
 
-export default NextAuth({
+export const authOptions = {
+  // Configure one or more authentication providers
   providers: [
-    Providers.Google({
+    SessionProvider({
       clientId: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
     }),
     // ...add more providers here
   ],
-  // Other options...
-});
+}
+
+export default NextAuth(authOptions)
