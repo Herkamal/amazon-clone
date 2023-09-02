@@ -3,11 +3,14 @@ import Image from "next/image";
 import { MenuIcon, SearchIcon, ShoppingCartIcon } from '@heroicons/react/outline';
 import { signIn, signOut, useSession } from "next-auth/react";
 import {useRouter} from "next/router"
+import { useSelector } from "react-redux";
+import { selectItems } from "../slices/basketSlice"; 
 
-
+// 2:36
 function Header() {
   const { data: session } = useSession();
   const router = useRouter();
+  const items = useSelector(selectItems)
 
   
   return (
@@ -28,7 +31,7 @@ function Header() {
             <SearchIcon className="h-12 p-4"></SearchIcon>
         </div>
         <div className="text-white flex items-center text-xs space-x-6 mx-6 whitespace-nowrap">
-          <div onClick={session ? signIn : signOut} className="link">
+          <div onClick={!session ? signIn : signOut} className="link">
             <p className="hover:underline">{session ? `Hello, ${session.user.name} ` : `Sign In` }</p>
             <p className="font-extrabold md:text-sm">Account & List</p>
           </div>
