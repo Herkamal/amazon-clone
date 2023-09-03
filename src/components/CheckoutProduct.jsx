@@ -3,12 +3,20 @@ import Image from 'next/image'
 import React from 'react'
 import Currency from "react-currency-formatter"
 import { useDispatch } from 'react-redux'
+import {addToBasket, removeFromBasket} from "../slices/basketSlice"
 
 
 function CheckoutProduct({id, title, price, rating, description, category, image, hasPrime}) {
-  const dispatch = useDispatch
+  const dispatch = useDispatch()
   const addItemToBasket = () => {
-//  2:54
+    const product ={
+      id, title, price, rating, description, category, image, hasPrime
+    }
+    dispatch(addToBasket(product))
+  }
+
+  const removeItemFromBasket = () => {
+    dispatch(removeFromBasket({id}))
   }
 
   return (
@@ -43,7 +51,7 @@ function CheckoutProduct({id, title, price, rating, description, category, image
 
           <div className='flex flex-col space-y-2 my-auto justify-self-end'>
             <button className='button' onClick={addItemToBasket}>Add to Basket</button>
-            <button className='button'> Remove to Basket</button>
+            <button className='button' onClick={removeItemFromBasket}> Remove to Basket</button>
           </div>
     </div>
   )
