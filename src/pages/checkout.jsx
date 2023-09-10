@@ -30,14 +30,6 @@ function Checkout() {
       alert(result.error.message);
     }
   };
-  axios.get("/api/create-checkout-session")
-  .then(response => {
-    // Handle successful response here
-  })
-  .catch(error => {
-    // Handle error here
-    console.error(error);
-  });
 
   return (
     <div className="bg-gray-100">
