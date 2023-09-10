@@ -6,27 +6,39 @@ import { selectItems, selectTotal } from "../slices/basketSlice";
 import CheckoutProduct from "../components/CheckoutProduct";
 import Currency from "react-currency-formatter";
 import { useSession } from "next-auth/react";
-import {loadStripe } from "@stripe/stripe-js";
-const stripePromise = loadStripe(process.env.stripe_public_key) 
-import axios from 'axios';
+import { loadStripe } from "@stripe/stripe-js";
+const stripePromise = loadStripe(process.env.stripe_public_key);
+import axios from "axios";
 
 function Checkout() {
   const items = useSelector(selectItems);
-  const total = useSelector(selectTotal)
+  const total = useSelector(selectTotal);
   const { data: session } = useSession();
 
   const createCheckoutSession = async () => {
-      const stripe = await stripePromise;
+    const stripe = await stripePromise;
 
-      const checkoutSession = await axios.post("/api/create-checkout-session",{
-        items: items,
-        email: session.user.email
-      } )
+    const checkoutSession = await axios.post("/api/create-checkout-session", {
+      items: items,
+      email: session.user.email,
+    });
 
-      const result = await stripe.redirectToCheckout({
-        sessionId: checkoutSession.data.id
-      })
-  }
+    const result = await stripe.redirectToCheckout({
+      sessionId: checkoutSession.data.id,
+    });
+    if (result.error) {
+      alert(result.error.message);
+    }
+  };
+  axios.get("/api/create-checkout-session")
+  .then(response => {
+    // Handle successful response here
+  })
+  .catch(error => {
+    // Handle error here
+    console.error(error);
+  });
+
   return (
     <div className="bg-gray-100">
       <Header />
@@ -70,8 +82,8 @@ function Checkout() {
                 </span>
               </h2>
               <button
-              role="link"
-              onClick={createCheckoutSession}
+                role="link"
+                onClick={createCheckoutSession}
                 disabled={!session}
                 className={`button mt-2 ${
                   !session &&
